@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#1E4FD8"><link rel="icon" href="/icon-192.png">
+<title>آفاق التوجيه الجامعي 2026 — Focus Bac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Lalezar&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#F6F9FD;--card:#FFFFFF;--ink:#0D1730;--mut:#5B6785;--line:#DCE4F2;--brand:#1E4FD8;--sun:#FFC93C;--ok:#12A36B}
+.dark{--bg:#0A1226;--card:#121C38;--ink:#EAF0FF;--mut:#9BA8C9;--line:#223056;--brand:#6C93FF}
+body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Arabic',system-ui,sans-serif}
+.display{font-family:'Lalezar','IBM Plex Sans Arabic',sans-serif}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.6rem 1.1rem;border-radius:12px;font-weight:600;background:var(--brand);color:#fff}
+.dark .btn{color:#0A1226}.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.inp{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:.6rem .9rem;outline:none}
+.inp:focus,.tab:focus-visible,.btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tab{padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);font-weight:500}
+.tab[aria-pressed=true]{background:var(--brand);color:#fff;border-color:var(--brand)}.dark .tab[aria-pressed=true]{color:#0A1226}
+.chip{font-size:.75rem;padding:.15rem .6rem;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header class="sticky top-0 z-30 backdrop-blur" style="background:color-mix(in srgb,var(--bg) 85%,transparent);border-bottom:1px solid var(--line)">
+  <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+    <a href="/" class="display text-xl flex items-center gap-2"><span class="inline-block w-3 h-3 rounded-full" style="background:var(--sun)"></span>Focus Bac</a>
+    <div class="flex gap-2"><a href="/#bac" class="btn btn-ghost text-sm">← حاسبة المعدل</a><button id="themeBtn" class="btn btn-ghost" aria-label="تبديل الوضع">🌙</button></div>
+  </div>
+</header>
+<main class="max-w-5xl mx-auto px-4 py-8">
+  <h1 class="display text-4xl md:text-5xl">آفاق التوجيه الجامعي 2026</h1>
+  <p class="mt-3 leading-7" style="color:var(--mut)">اختر شعبتك لترى الاختصاصات الجامعية التي تقبلها، مع <b>طاقة الاستيعاب</b> في الدورة النهائية 2026 و<b>مجموع آخر موجه 2025</b>. المصدر: «دليل طاقة الاستيعاب — الدورة النهائية للتوجيه الجامعي 2026» الصادر عن وزارة التعليم العالي والبحث العلمي.</p>
+  <p class="mt-2 text-sm p-3 rounded-xl" style="background:var(--card);border:1px solid var(--sun)">⚠️ استخرجت هذه الجداول آلياً من ملف PDF من 127 صفحة. قبل أي قرار توجيه راجع المعطيات في الدليل الرسمي وعلى <a class="underline" href="https://www.orientation.tn" target="_blank" rel="noopener">orientation.tn</a>.</p>
+
+  <div id="tabs" class="flex gap-2 flex-wrap mt-6" role="group" aria-label="الشعبة"></div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+    <label class="text-sm sm:col-span-2">بحث (اختصاص، مؤسسة، جامعة)<input id="q" class="inp mt-1" placeholder="مثال: طب، هندسة، تونس…"></label>
+    <label class="text-sm">المجال<select id="fld" class="inp mt-1"></select></label>
+    <label class="text-sm">ترتيب<select id="srt" class="inp mt-1"><option value="a">المجموع الأدنى أولاً</option><option value="d">المجموع الأعلى أولاً</option><option value="c">الأكثر مقاعد</option></select></label>
+    <label class="text-sm">مجموعي T (اختياري)<input id="t" type="number" step="0.01" class="inp mt-1" placeholder="مثال: 120"></label>
+    <label class="text-sm flex items-end gap-2 pb-2 sm:col-span-2"><input id="av" type="checkbox" class="w-5 h-5 accent-[var(--brand)]">المتاح فقط (طاقة استيعاب أكبر من 0)</label>
+  </div>
+  <p id="cnt" class="mt-5 text-sm" style="color:var(--mut)" role="status"></p>
+  <div id="list" class="grid md:grid-cols-2 gap-4 mt-3"></div>
+  <button id="more" class="btn btn-ghost w-full mt-5 hidden">عرض المزيد</button>
+  <details class="card p-4 mt-8"><summary class="cursor-pointer font-semibold">كيف أقرأ المعطيات؟</summary>
+    <ul class="list-disc pr-5 mt-3 space-y-2 text-sm leading-7" style="color:var(--mut)">
+      <li><b>الطاقة:</b> عدد المقاعد المخصصة لشعبتك في هذا الاختصاص في الدورة النهائية 2026. الرمز «—» يعني لا معطية.</li>
+      <li><b>مجموع آخر موجه 2025:</b> مجموع النقاط T لآخر تلميذ وُجّه إلى هذا الاختصاص في 2025. هو مؤشر وليس ضماناً.</li>
+      <li><b>الصيغة (مثل FG+ANG):</b> مجموعك T = الصيغة الإجمالية FG + عدد المادة المذكورة (AR عربية، ANG إنجليزية، F فرنسية، PH فلسفة، M رياضيات، SP علوم فيزيائية، SVT علوم الحياة والأرض، GEST تصرف…). تجد FG في <a class="underline" href="/#bac">حاسبة المعدل</a>.</li>
+      <li><b>مجموعي T:</b> إن أدخلته، تظهر الاختصاصات التي مجموعها الأخير 2025 أقل منه أو يساويه.</li>
+    </ul></details>
+</main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('fb_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('fb_'+k,JSON.stringify(v))}catch(e){}}};
+function theme(d){document.documentElement.classList.toggle('dark',d);$('#themeBtn').textContent=d?'☀️':'🌙';store.set('dark',d)}
+theme(store.get('dark',matchMedia('(prefers-color-scheme: dark)').matches));$('#themeBtn').onclick=()=>theme(!document.documentElement.classList.contains('dark'));
+const BR=['آداب','رياضيات','علوم تجريبية','اقتصاد وتصرف','علوم تقنية','علوم الإعلامية','رياضة'];
+let DATA=[],br=BR.includes(store.get('branch','')) ?store.get('branch',''):'علوم تجريبية',shown=30;
+const rowsFor=o=>o.r.filter(r=>r[0]===br||(br==='آداب'&&r[0]==='آداب (+)'));
+function drawTabs(){$('#tabs').innerHTML='';BR.forEach(b=>{const e=document.createElement('button');e.className='tab';e.textContent=b;e.setAttribute('aria-pressed',b===br);e.onclick=()=>{br=b;if(b!=='رياضة')store.set('branch',b);shown=30;drawTabs();render()};$('#tabs').appendChild(e)})}
+function render(){
+  const q=$('#q').value.trim(),f=$('#fld').value,T=parseFloat($('#t').value),av=$('#av').checked;
+  let L=DATA.map(o=>({o,rs:rowsFor(o)})).filter(x=>x.rs.length);
+  if(f)L=L.filter(x=>x.o.f===f);
+  if(q)L=L.filter(x=>(x.o.s.join(' ')+' '+x.o.i+' '+x.o.d+' '+x.o.f).includes(q));
+  if(av)L=L.filter(x=>x.rs.some(r=>r[2]>0));
+  if(!isNaN(T))L=L.filter(x=>x.rs.some(r=>r[3]!==null&&r[3]<=T));
+  const sc=x=>{const v=x.rs.map(r=>r[3]).filter(v=>v!==null);return v.length?Math.min(...v):null},cp=x=>Math.max(...x.rs.map(r=>r[2]||0));
+  const s=$('#srt').value;L.sort((a,b)=>s==='c'?cp(b)-cp(a):s==='d'?(sc(b)??-1)-(sc(a)??-1):(sc(a)??1e9)-(sc(b)??1e9));
+  $('#cnt').textContent=L.length+' اختصاصاً لشعبة «'+br+'»'+(av?' (متاح)':'');
+  $('#list').innerHTML=L.slice(0,shown).map(({o,rs})=>`<article class="card p-4"><div class="flex flex-wrap gap-2 mb-2"><span class="chip">${esc(o.f)}</span>${o.t?'<span class="chip" style="border-color:var(--sun)">تتطلب اختباراً</span>':''}</div>
+    <h3 class="font-semibold leading-7">${esc(o.s.join(' · '))}</h3><p class="text-sm mt-1" style="color:var(--mut)">${esc(o.d)}</p><p class="text-sm mt-1">${esc(o.i)}</p>
+    ${rs.map(r=>`<div class="flex flex-wrap gap-x-4 gap-y-1 text-sm mt-3 p-2 rounded-xl" style="background:var(--bg)">${r[0]!==br?`<span class="chip">${esc(r[0])}</span>`:''}<span>الطاقة: <b>${r[2]===null?'—':r[2]}</b></span><span>مجموع آخر موجه 2025: <b>${r[3]===null?'—':r[3]}</b></span><span dir="ltr" style="color:var(--mut)">${esc(r[1])}</span></div>`).join('')}
+    <p class="text-xs mt-2" style="color:var(--mut)">الرمز: ${esc(o.c)}</p></article>`).join('');
+  $('#more').classList.toggle('hidden',L.length<=shown);$('#more').onclick=()=>{shown+=30;render()};
+}
+['q','fld','srt','t','av'].forEach(i=>$('#'+i).oninput=()=>{shown=30;render()});
+drawTabs();
+fetch('horizons.json').then(r=>r.json()).then(d=>{DATA=d;const fs=[...new Set(d.map(o=>o.f))];$('#fld').innerHTML='<option value="">كل المجالات</option>'+fs.map(x=>`<option>${esc(x)}</option>`).join('');render()})
+ .catch(()=>{$('#cnt').textContent='تعذّر تحميل البيانات. تأكد من الانترنت وأن الملف horizons.json مرفوع مع الموقع.'});
+</script>
+</body>
+</html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#1E4FD8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Focus Bac"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/icon-192.png">
+<title>Focus Bac — ركّز وانجح في الباكالوريا</title>
+<meta name="description" content="منصة تونسية لتلاميذ الباكالوريا: بومودورو، مهام، أصوات تركيز، ومخطط ذكي للمراجعة.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Lalezar&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class'}</script>
+<style>
+:root{--bg:#F6F9FD;--card:#FFFFFF;--ink:#0D1730;--mut:#5B6785;--line:#DCE4F2;--brand:#1E4FD8;--sun:#FFC93C;--ok:#12A36B}
+.dark{--bg:#0A1226;--card:#121C38;--ink:#EAF0FF;--mut:#9BA8C9;--line:#223056;--brand:#6C93FF;--sun:#FFC93C}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;transition:background .3s,color .3s}
+.display{font-family:'Lalezar','IBM Plex Sans Arabic',sans-serif;letter-spacing:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1.1rem;border-radius:12px;font-weight:600;background:var(--brand);color:#fff;transition:transform .15s,filter .15s}
+.dark .btn{color:#0A1226}
+.btn:hover{filter:brightness(1.08)} .btn:active{transform:scale(.97)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.dark .btn-ghost{color:var(--ink)}
+.btn-sun{background:var(--sun);color:#0D1730!important}
+.inp{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:.65rem .9rem;outline:none}
+.inp:focus,.btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.pro{display:inline-flex;gap:.25rem;align-items:center;background:var(--sun);color:#0D1730;font-size:.75rem;font-weight:600;padding:.15rem .6rem;border-radius:999px}
+.pro-card{position:relative;overflow:hidden}
+.pro-card.locked .pro-body{filter:blur(3px);pointer-events:none;user-select:none;opacity:.6}
+.lock{display:none;position:absolute;inset:0;z-index:5;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;cursor:pointer;background:transparent;width:100%;color:var(--ink);font-weight:600}
+.pro-card.locked .lock{display:flex}
+.tab{padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);font-weight:500}
+.tab[aria-pressed=true]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.dark .tab[aria-pressed=true]{color:#0A1226}
+.ring{transition:stroke-dashoffset 1s linear}
+dialog{border:none;background:transparent;padding:1rem;max-width:100vw;max-height:100vh;margin:auto}
+dialog::backdrop{background:rgba(5,10,25,.65);backdrop-filter:blur(4px)}
+.opt{display:block;width:100%;text-align:start;padding:.75rem 1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);transition:background .15s}
+.opt:hover{border-color:var(--brand)} .opt.good{background:#12A36B;color:#fff;border-color:#12A36B} .opt.bad{background:#D94141;color:#fff;border-color:#D94141}
+.zellige{background-image:radial-gradient(circle at 1px 1px,var(--line) 1.5px,transparent 0);background-size:22px 22px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-30 backdrop-blur" style="background:color-mix(in srgb,var(--bg) 85%,transparent);border-bottom:1px solid var(--line)">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+    <a href="#top" class="display text-2xl flex items-center gap-2"><span class="inline-block w-3 h-3 rounded-full" style="background:var(--sun)"></span>Focus Bac</a>
+    <nav class="hidden md:flex gap-6 text-sm" style="color:var(--mut)">
+      <a href="#focus" class="hover:opacity-70">التركيز</a><a href="#games" class="hover:opacity-70">الألعاب</a><a href="#ai" class="hover:opacity-70">اسأل الذكاء</a><a href="#bac" class="hover:opacity-70">الشعب والمعدل</a><a href="/horizons.html" class="hover:opacity-70">آفاق التوجيه</a><a href="#library" class="hover:opacity-70">المكتبة</a><a href="#archive" class="hover:opacity-70">أرشيف الإصلاحات</a><a href="#pro" class="hover:opacity-70">الميزات الذكية</a><a href="#teachers" class="hover:opacity-70">الأساتذة</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="installBtn" class="btn btn-ghost text-sm hidden">📲 ثبّت</button>
+      <button id="proBtn" class="btn btn-sun text-sm" onclick="openPaywall('اشتراك Pro')">Pro ⭐</button>
+      <button id="themeBtn" class="btn btn-ghost" aria-label="تبديل الوضع" style="padding:.6rem .8rem">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="max-w-6xl mx-auto px-4 pt-6">
+  <div class="card p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4" style="border-color:var(--sun)">
+    <div><p class="font-semibold">العدّ التنازلي لانطلاق امتحان البكالوريا (دورة 2027)</p><p class="text-sm" style="color:var(--mut)">الاختبارات الكتابية تبدأ يوم 2 جوان 2027 حسب روزنامة وزارة التربية.</p></div>
+    <div id="cd" dir="ltr" class="flex gap-2 text-center" role="timer" aria-live="off"></div>
+  </div>
+</section>
+<!-- ============ FOCUS ZONE (hero) ============ -->
+<section id="focus" class="zellige">
+  <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 grid lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <h1 class="display text-5xl md:text-7xl leading-[1.15]">الباك قريب، <br>وتركيزك هو سلاحك.</h1>
+      <p class="mt-5 text-lg max-w-md" style="color:var(--mut)">مؤقت بومودورو، قائمة مهام، وأصوات هادئة: كلّها مجانية وتتحفظ تلقائياً في متصفحك. والميزات الذكية تنتظرك في نسخة Pro.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="#tools" class="btn">ابدأ المراجعة الآن</a>
+        <a href="#pro" class="btn btn-ghost">اكتشف Pro ⭐</a>
+      </div>
+      <div class="mt-5"><button id="motBtn" class="btn btn-sun">💪 حفّزني</button><p id="motTxt" class="mt-3 leading-7 max-w-md" role="status" style="min-height:3.5rem"></p></div>
+    </div>
+
+    <!-- Pomodoro -->
+    <div class="card p-6 md:p-8 text-center shadow-xl" style="box-shadow:0 20px 50px -20px color-mix(in srgb,var(--brand) 45%,transparent)">
+      <div class="flex justify-center gap-2 mb-5" role="group" aria-label="نوع الجلسة">
+        <button class="tab" data-mode="focus" aria-pressed="true">تركيز</button>
+        <button class="tab" data-mode="short" aria-pressed="false">استراحة</button>
+        <button class="tab" data-mode="long" aria-pressed="false">استراحة طويلة</button>
+      </div>
+      <div class="relative w-60 h-60 sm:w-72 sm:h-72 mx-auto">
+        <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="var(--line)" stroke-width="7"/>
+          <circle id="ring" class="ring" cx="60" cy="60" r="54" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="0"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div id="time" dir="ltr" class="display text-6xl sm:text-7xl tabular-nums">25:00</div>
+          <div id="sessions" class="text-sm mt-1" style="color:var(--mut)">جلسات اليوم: 0</div>
+        </div>
+      </div>
+      <input id="goal" class="inp mt-5 text-center" maxlength="80" placeholder="تحدي 25 دقيقة: ما الذي ستنجزه؟ (مثال: 3 تمارين دوال)">
+      <div class="mt-4 flex justify-center gap-3">
+        <button id="startBtn" class="btn px-8">ابدأ</button>
+        <button id="resetBtn" class="btn btn-ghost">إعادة</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FREE TOOLS ============ -->
+<section id="tools" class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex items-center gap-3 mb-6"><h2 class="display text-3xl">أدواتك المجانية</h2><span class="text-sm px-3 py-1 rounded-full" style="background:var(--ok);color:#fff">مجاني 100%</span></div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+    <div class="card p-5 lg:col-span-1">
+      <h3 class="font-semibold text-lg mb-3">المهام</h3>
+      <div class="flex gap-2"><input id="taskIn" class="inp" placeholder="مثال: تمارين الدوال — رياضيات" maxlength="90"><button id="taskAdd" class="btn" aria-label="إضافة">+</button></div>
+      <ul id="taskList" class="mt-4 space-y-2 max-h-64 overflow-auto"></ul>
+      <p id="taskCount" class="text-sm mt-3" style="color:var(--mut)"></p>
+    </div>
+
+    <div class="card p-5">
+      <h3 class="font-semibold text-lg mb-3">ملاحظاتي</h3>
+      <textarea id="notes" class="inp" rows="9" placeholder="اكتب قوانينك، تواريخك، أو أي فكرة تخاف تنساها… تتحفظ وحدها."></textarea>
+      <p id="notesState" class="text-sm mt-2" style="color:var(--mut)">محفوظة تلقائياً</p>
+    </div>
+
+    <div class="card p-5 md:col-span-2 lg:col-span-1">
+      <h3 class="font-semibold text-lg mb-3">أصوات التركيز</h3>
+      <div class="grid grid-cols-3 gap-2" id="sounds">
+        <button class="tab text-center" data-s="rain" aria-pressed="false">🌧️ مطر</button>
+        <button class="tab text-center" data-s="brown" aria-pressed="false">🌊 موج</button>
+        <button class="tab text-center" data-s="lofi" aria-pressed="false">🎹 لو-فاي</button>
+      </div>
+      <label class="block mt-5 text-sm" style="color:var(--mut)">مستوى الصوت
+        <input id="vol" type="range" min="0" max="100" value="40" class="w-full mt-2 accent-[var(--brand)]">
+      </label>
+      <p class="text-sm mt-4 mb-2 font-semibold">تلاوات خاشعة</p>
+      <div class="grid grid-cols-3 gap-2" id="quran"></div><p id="qStat" class="text-xs mt-2" style="color:var(--mut)" role="status"></p>
+      <label class="btn btn-ghost w-full mt-4 cursor-pointer">🎵 شغّل موسيقى من هاتفك<input id="myMusic" type="file" accept="audio/*" multiple class="hidden"></label>
+      <p id="myTrack" class="text-sm mt-2" style="color:var(--mut)"></p>
+      <p class="text-sm mt-3" style="color:var(--mut)">الأصوات تتولّد مباشرة في المتصفح، بلا تحميل ولا انترنت.</p>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-4"><div class="ad" data-ad="top"></div></div>
+<section id="games" class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex items-center gap-3 mb-5"><h2 class="display text-3xl">ألعاب ذكية مجانية</h2><span class="text-sm px-3 py-1 rounded-full" style="background:var(--ok);color:#fff">مجاني 100%</span></div>
+  <div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-5"><h3 class="font-semibold text-lg mb-1">⚡ سباق الباك: رياضيات</h3><p class="text-sm mb-3" style="color:var(--mut)">مشتقات ونهايات وأعداد مركبة ولوغاريتم وتكاملات وإحصاء: أجب عن أكبر عدد في 30 ثانية.</p>
+      <div id="mQ" class="text-xl font-semibold text-center my-3 leading-9">جاهز؟</div>
+      <input id="mIn" type="number" class="inp text-center" disabled placeholder="اكتب الجواب ثم Enter">
+      <div class="flex items-center justify-between mt-3"><span id="mInfo" class="text-sm" style="color:var(--mut)"></span><button id="mGo" class="btn">ابدأ</button></div>
+      <div class="ad mt-4" data-ad="game1"></div></div>
+    <div class="card p-5"><h3 class="font-semibold text-lg mb-1">🧠 لعبة المطابقة</h3><p id="memInfo" class="text-sm mb-3" style="color:var(--mut)">اضغط «ابدأ اللعبة»: تُعرض البطاقات 3 ثوانٍ لتحفظها، ثم تُقلب وتطابق كل قانون بنتيجته.</p>
+      <div id="memGrid" class="grid grid-cols-4 gap-2"></div>
+      <button id="memNew" class="btn mt-3 w-full">ابدأ اللعبة</button>
+      <div class="ad mt-4" data-ad="game2"></div></div>
+  </div>
+</section>
+
+<section id="ai" class="max-w-4xl mx-auto px-4 py-10">
+  <div class="flex items-center gap-3 mb-2"><h2 class="display text-3xl">اسأل الذكاء الاصطناعي</h2><span class="text-sm px-3 py-1 rounded-full" style="background:var(--ok);color:#fff">مجاني</span></div>
+  <p class="mb-4" style="color:var(--mut)">اسأله عن أي درس أو تمرين أو فكرة. (20 سؤالاً في اليوم)</p>
+  <div class="card p-4"><div id="aiLog" class="space-y-3 max-h-80 overflow-auto mb-3 leading-7"></div>
+    <div class="flex gap-2"><input id="aiIn" class="inp" placeholder="اكتب سؤالك هنا…" maxlength="500"><button id="aiGo" class="btn">اسأل</button></div></div>
+</section>
+
+<section id="bac" class="max-w-6xl mx-auto px-4 py-10">
+  <h2 class="display text-3xl mb-2">الشعب وحاسبة المعدل</h2>
+  <p class="mb-5" style="color:var(--mut)">اختر شعبتك لترى موادها وآفاقها بعد الباكالوريا، ثم احسب معدلك المنتظر.</p>
+  <div id="bTabs" class="flex gap-2 flex-wrap mb-5"></div>
+  <div class="grid lg:grid-cols-2 gap-5">
+    <div class="card p-5"><h3 class="font-semibold text-lg mb-3">الآفاق بعد الباكالوريا</h3><ul id="bHor" class="list-disc pr-5 space-y-2 leading-7"></ul>
+      <p class="text-sm mt-4" style="color:var(--mut)">هذه آفاق عامة تقريبية، والمتاح فعلياً يتحدد بالصيغة الإجمالية FG وطاقة الاستيعاب كل سنة.</p>
+      <h4 class="font-semibold mt-5 mb-2">مجالات الدراسة في التعليم العالي (دليل التوجيه 2026)</h4>
+      <p class="text-sm leading-7" style="color:var(--mut)">الآداب واللغات والمراحل التحضيرية الأدبية · العلوم الإنسانية والاجتماعية والدينية · الثقافة والفنون الجميلة والفنون والحرف · السياحة والتنشيط والرياضة والتربية البدنية · العلوم القانونية والسياسية · العلوم الاقتصادية وعلوم التصرف · العلوم الصحيحة والتكنولوجيا · الهندسة المعمارية والمراحل التحضيرية العلمية · علوم الصحة والطب وطب الأسنان والصيدلة · العلوم الفلاحية والبيوتكنولوجيا والبيئة</p>
+      <a class="btn btn-sun w-full mt-4" href="/horizons.html">تصفّح اختصاصات شعبتي وطاقة الاستيعاب 2026</a>
+      <a class="btn btn-ghost w-full mt-3" href="https://www.orientation.tn" target="_blank" rel="noopener">الموقع الرسمي للتوجيه الجامعي orientation.tn</a></div>
+    <div class="card p-5"><h3 class="font-semibold text-lg mb-1">حاسبة المعدل</h3>
+      <p class="text-sm mb-3" style="color:var(--mut)">أدخل أعدادك من 20. الضوارب قابلة للتعديل: طابِقها مع منشور الوزارة للسنة الحالية.</p>
+      <div id="bRows" class="space-y-2"></div><p id="bWarn" class="text-sm mt-3" style="color:#D94141"></p><label class="text-sm block mt-3">المعدل السنوي العام (اختياري)<input id="bAnn" type="number" min="0" max="20" step="0.01" class="inp mt-1" placeholder="/20"></label>
+      <div class="mt-4 p-4 rounded-xl text-center" style="background:var(--bg)"><div class="text-sm" style="color:var(--mut)">معدلك المنتظر</div><div id="bRes" class="display text-5xl">—</div><div id="bMention" class="text-sm"></div><div id="bFg" class="text-sm mt-2 font-semibold"></div></div></div>
+  </div>
+</section>
+
+<section id="library" class="max-w-6xl mx-auto px-4 py-10">
+  <h2 class="display text-3xl mb-2">مكتبة التلميذ المتميز</h2>
+  <p class="mb-5" style="color:var(--mut)">تلخيصات ومقالات ونصائح مرتبة حسب كل شعبة. الشعبة المختارة في حاسبة المعدل هي نفسها هنا.</p>
+  <div id="lTabs" class="flex gap-2 flex-wrap mb-4"></div>
+  <div class="card p-4 mb-5 flex flex-wrap gap-3 items-center"><label class="btn btn-sun cursor-pointer">➕ ارفع تلخيصاً (PDF أو صورة)<input id="lUp" type="file" accept="application/pdf,image/*" multiple class="hidden"></label>
+    <p class="text-sm flex-1 min-w-[14rem]" style="color:var(--mut)">ما ترفعه يُحفظ في جهازك فقط وتراه أنت وحدك. لنشر ملف لكل التلاميذ: ضعه في مجلد pdf وأضف سطره في library.json (زر «نسخ سطر النشر» يجهّزه لك).</p></div>
+  <div id="lGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+</section>
+
+<section id="archive" class="max-w-6xl mx-auto px-4 py-10">
+  <h2 class="display text-3xl mb-2">أرشيف إصلاحات الباكالوريا</h2>
+  <p class="mb-5" style="color:var(--mut)">من 1994 إلى اليوم: اختر السنة والمادة لنفتح لك نتائج الإصلاحات الرسمية.</p>
+  <div class="card p-5 grid md:grid-cols-4 gap-3 items-end">
+    <label class="text-sm">السنة<select id="aY" class="inp mt-1"></select></label>
+    <label class="text-sm">الشعبة<select id="aB" class="inp mt-1"></select></label>
+    <label class="text-sm">المادة<input id="aS" class="inp mt-1" value="رياضيات"></label>
+    <a id="aGo" class="btn" target="_blank" rel="noopener">افتح الإصلاح</a>
+  </div>
+  <div class="card p-5 mt-4 flex flex-wrap gap-3 items-center" style="border-color:var(--sun)"><p class="flex-1 min-w-[14rem]">كل مواضيع الباكالوريا منذ 1994 مع الإصلاحات، في الموقع الذي أعلنت عنه وزارة التربية.</p>
+    <a class="btn btn-sun" href="https://www.bacweb.tn" target="_blank" rel="noopener">افتح أرشيف المواضيع والإصلاحات</a><a class="btn btn-ghost" href="https://www.edunet.tn" target="_blank" rel="noopener">بوابة edunet.tn</a></div>
+  <div class="ad mt-5" data-ad="archive"></div>
+</section>
+
+<!-- ============ PRO ============ -->
+<section id="pro" class="max-w-6xl mx-auto px-4 py-10">
+  <div id="adSlot" class="card p-4 mb-6 text-center text-sm" style="color:var(--mut)">مساحة إعلانية في النسخة المجانية — نسخة Pro بدون إعلانات تماماً</div>
+  <div class="flex items-center gap-3 mb-2"><h2 class="display text-3xl">الميزات الذكية</h2><span class="pro">Pro ⭐</span></div>
+  <p class="mb-6" style="color:var(--mut)">نسخة Pro بدون إعلانات وتفتح كل الأدوات. المعاينة المموّهة خلف القفل هي الأداة نفسها.</p>
+  <div class="grid md:grid-cols-2 gap-5">
+
+    <div class="card pro-card p-5 locked" data-feature="محلل الأداء">
+      <button class="lock" onclick="openPaywall('محلل البيانات والأداء الذكي')"><span class="pro">Pro ⭐</span><span class="px-4 text-center">يكشف نقاط قوتك وضعفك برسوم بيانية</span></button>
+      <div class="pro-body"><h3 class="font-semibold text-lg mb-3">📊 لوحة الأداء</h3><div id="dash"></div></div>
+    </div>
+
+    <div class="card pro-card p-5 locked md:col-span-2" data-feature="معركة الباك">
+      <button class="lock" onclick="openPaywall('معركة الباك')"><span class="pro">Pro ⭐</span><span class="px-4 text-center">اهزم وحش الباك بأجوبتك: قلوب، سلسلة انتصارات، ووقت يضغط عليك</span></button>
+      <div class="pro-body">
+        <h3 class="font-semibold text-lg mb-1">⚔️ معركة الباك</h3>
+        <div id="bStart"><p class="text-sm mb-3" style="color:var(--mut)">10 أسئلة من الرياضيات والفيزياء وعلوم الحياة والأرض والفلسفة. كل جواب صحيح يضرب الوحش، والسلسلة المتتالية تضاعف الضربة. عندك 3 قلوب و15 ثانية لكل سؤال.</p>
+          <div class="flex gap-2"><select id="bSub" class="inp"><option>الكل</option><option>رياضيات</option><option>فيزياء</option><option>علوم الحياة والأرض</option></select><button id="bGo" class="btn px-6">ابدأ المعركة</button></div>
+          <p id="bBest" class="text-sm mt-3" style="color:var(--mut)"></p></div>
+        <div id="bPlay" class="hidden">
+          <div class="flex justify-between text-sm mb-2"><span id="bHearts"></span><span id="bStreak" class="font-semibold"></span><span id="bSc"></span></div>
+          <div id="bBoss" class="text-6xl text-center" style="transition:transform .15s">👾</div>
+          <div class="h-3 rounded-full my-2" style="background:var(--line)"><div id="bHp" class="h-3 rounded-full" style="width:100%;background:#D94141;transition:width .4s"></div></div>
+          <div class="h-1.5 rounded-full mb-3" style="background:var(--line)"><div id="bTm" class="h-1.5 rounded-full" style="width:100%;background:var(--sun)"></div></div>
+          <p id="bSubj" class="text-xs mb-1" style="color:var(--mut)"></p><p id="bQ" class="mb-3 leading-7 font-semibold"></p><div id="bOpts" class="grid sm:grid-cols-2 gap-2"></div></div>
+        <div id="bEnd" class="hidden text-center py-4"><div id="bEmoji" class="text-6xl"></div><h4 id="bTitle" class="display text-3xl mt-2"></h4><p id="bMsg" class="mt-2 leading-7"></p><button class="btn mt-4" onclick="bReset()">العب مرة أخرى</button></div>
+      </div>
+    </div>
+
+    <!-- Planner -->
+    <div class="card pro-card p-5 locked" data-feature="المخطط الزمني الذكي">
+      <button class="lock" onclick="openPaywall('المخطط الزمني الذكي')"><span class="pro">Pro ⭐</span><span class="px-4 text-center">جدول أسبوعي جاهز من أيامك المتبقية</span></button>
+      <div class="pro-body">
+        <h3 class="font-semibold text-lg mb-3">📅 المخطط الزمني الذكي</h3>
+        <label class="text-sm">الأيام المتبقية للامتحان<input id="plDays" type="number" min="1" max="200" value="30" class="inp mt-1"></label>
+        <label class="text-sm block mt-3">المواد (افصل بينها بفاصلة)<input id="plSubj" class="inp mt-1" value="رياضيات, فيزياء, علوم الحياة, فلسفة"></label>
+        <label class="text-sm block mt-3">ساعات المراجعة في اليوم<input id="plHours" type="number" min="1" max="12" value="4" class="inp mt-1"></label>
+        <button id="plGo" class="btn mt-4 w-full">ولّد جدولي</button>
+        <div id="plOut" class="mt-4 text-sm space-y-2"></div>
+      </div>
+    </div>
+
+    <!-- Summarizer -->
+    <div class="card pro-card p-5 locked" data-feature="ملخص الذكاء الاصطناعي">
+      <button class="lock" onclick="openPaywall('ملخص الذكاء الاصطناعي')"><span class="pro">Pro ⭐</span><span class="px-4 text-center">خلاصة درسك الطويل في ثوانٍ</span></button>
+      <div class="pro-body">
+        <h3 class="font-semibold text-lg mb-3">✨ ملخص فوري للدروس</h3>
+        <textarea id="sumIn" class="inp" rows="6" placeholder="الصق درسك هنا، أو ارفع صورة أو PDF…"></textarea>
+        <label class="btn btn-ghost w-full mt-3 cursor-pointer">📎 ارفع صورة أو PDF<input id="sumFile" type="file" accept="image/*,application/pdf" class="hidden"></label><p id="sumSt" class="text-sm mt-2" style="color:var(--mut)"></p>
+        <button id="sumGo" class="btn mt-3 w-full">لخّص لي</button>
+        <div id="sumOut" class="mt-4 text-sm leading-7 p-3 rounded-xl hidden" style="background:var(--bg);border:1px solid var(--line)"></div>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="card pro-card p-5 locked" data-feature="ألعاب الكويز الذكية">
+      <button class="lock" onclick="openPaywall('ألعاب الكويز الذكية')"><span class="pro">Pro ⭐</span><span class="px-4 text-center">حوّل درسك إلى أسئلة ونقاط</span></button>
+      <div class="pro-body">
+        <h3 class="font-semibold text-lg mb-3">🎮 كويز الباك</h3>
+        <div id="qSetup">
+          <textarea id="qIn" class="inp" rows="6" placeholder="الصق درسك، وتتحوّل جمله لأسئلة (أكمل الفراغ)…"></textarea>
+          <label class="btn btn-ghost w-full mt-3 cursor-pointer">📎 ارفع صورة أو PDF<input id="qFile" type="file" accept="image/*,application/pdf" class="hidden"></label><p id="qSt" class="text-sm mt-2" style="color:var(--mut)"></p>
+          <button id="qGo" class="btn mt-3 w-full">ابدأ اللعبة</button>
+        </div>
+        <div id="qPlay" class="hidden">
+          <div class="flex justify-between text-sm mb-3" style="color:var(--mut)"><span id="qNum"></span><span id="qScore" class="font-semibold" style="color:var(--ink)"></span></div>
+          <p id="qText" class="mb-3 leading-7"></p>
+          <div id="qOpts" class="space-y-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEACHERS ============ -->
+<section id="teachers" class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex items-center gap-3 mb-2"><h2 class="display text-3xl">ركن الأساتذة</h2><span class="text-sm px-3 py-1 rounded-full" style="background:var(--ok);color:#fff">مجاني 100%</span></div>
+  <p class="mb-5" style="color:var(--mut)">نصائح توجيهية وحصص دعم، مرتبة حسب الشعبة والمادة.</p>
+  <div class="grid sm:grid-cols-2 gap-3 mb-5">
+    <label class="text-sm">الشعبة<select id="tBranch" class="inp mt-1"></select></label>
+    <label class="text-sm">المادة<select id="tSubject" class="inp mt-1"></select></label>
+  </div>
+  <div class="grid lg:grid-cols-2 gap-6">
+    <div><h3 class="font-semibold text-lg mb-3">💡 نصائح الأساتذة</h3><div id="tTips" class="space-y-3"></div></div>
+    <div><h3 class="font-semibold text-lg mb-3">🎓 دروس الدعم</h3><div id="tGrid" class="space-y-3"></div>
+      <div class="card p-4 mt-4" style="border-color:var(--sun)"><p class="text-sm mb-3" style="color:var(--mut)">أستاذ وتحب تنشر نصائحك أو دروس الدعم عندك هنا؟ راسلنا وننشرها لك.</p><a id="joinTeacher" class="btn btn-ghost w-full" target="_blank" rel="noopener">انضم كأستاذ</a></div></div>
+  </div>
+</section>
+</main>
+
+<div class="max-w-6xl mx-auto px-4 pb-6"><div class="ad" data-ad="bottom"></div></div>
+<footer class="text-center text-sm py-8" style="color:var(--mut);border-top:1px solid var(--line)">Focus Bac © 2026 — صُنع في تونس 🇹🇳 لتلاميذ الباكالوريا</footer>
+
+<dialog id="challenge"><div class="card p-6 w-[92vw] max-w-sm text-center"><div id="chFace" class="text-7xl">🤔</div><h3 id="chTitle" class="display text-2xl mt-3">انتهى الوقت!</h3><p id="chMsg" class="mt-2 leading-7"></p><div id="chBtns" class="flex gap-2 mt-5"><button class="btn flex-1" onclick="chRes(true)">أنجزت هدفي ✓</button><button class="btn btn-ghost flex-1" onclick="chRes(false)">لم أكمل</button></div><button id="chClose" class="btn w-full mt-5 hidden" onclick="challenge.close()">حسناً</button></div></dialog>
+<!-- ============ PAYWALL ============ -->
+<dialog id="paywall">
+  <div class="card p-6 w-[92vw] max-w-md relative" style="border-color:var(--sun)">
+    <button class="absolute top-3 left-3 btn btn-ghost" style="padding:.3rem .7rem" aria-label="إغلاق" onclick="paywall.close()">✕</button>
+    <div class="text-center">
+      <span class="pro mb-3">Pro ⭐</span>
+      <h3 class="display text-3xl mt-2">ميزة حصرية لنسخة Pro</h3>
+      <p id="pwFeature" class="text-sm mt-1" style="color:var(--mut)"></p>
+      <p class="mt-4 leading-7">هذه ميزة ذكية حصرية لنسخة Pro! تواصل معنا عبر تطبيق D17 على الرقم 23705353 لتفعيل اشتراكك الرمزي، وابعت وصل الدفع عبر الواتساب على نفس الرقم لتحصل على كود التفعيل السري.</p>
+    </div>
+    <a id="d17Btn" class="btn btn-sun w-full mt-5" target="_blank" rel="noopener">أرسل وصل الدفع عبر واتساب</a>
+    <div class="flex items-center gap-3 my-5 text-sm" style="color:var(--mut)"><hr class="flex-1" style="border-color:var(--line)">عندك كود التفعيل؟<hr class="flex-1" style="border-color:var(--line)"></div>
+    <div class="flex gap-2"><input id="codeIn" dir="ltr" class="inp text-center" placeholder="FOCUS-XXXX" autocomplete="off"><button id="codeBtn" class="btn">فعّل</button></div>
+    <p id="codeMsg" class="text-sm mt-2 min-h-[1.25rem]" role="status"></p>
+  </div>
+</dialog>
+
+<script>
+/* ================= الإعدادات (عدّلها حسب منصتك) ================= */
+const CONFIG = {
+  contactLink: "https://wa.me/21623705353?text=" + encodeURIComponent("مرحباً، دفعت اشتراك Focus Bac Pro عبر D17 وهذا وصل الدفع، أرجو إرسال كود التفعيل."),
+  ads: {}, // مثال: top:{img:"ad1.png",link:"https://…"} للمفاتيح top, game1, game2, archive, bottom
+    // بيانات تجريبية: عدّلها بحرية. branches: قائمة الشعب أو 'الكل' ، contact: اتركه null ليستعمل رقمك
+  teachers: [
+    {branches:['رياضيات','علوم تجريبية','علوم تقنية','علوم الإعلامية'],subject:'رياضيات',name:'أستاذ رياضيات (مثال)',info:'حصص دعم في الدوال والمتتاليات والأعداد المركبة، حضورية أو عن بعد.',contact:null},
+    {branches:['رياضيات','علوم تجريبية','علوم تقنية','علوم الإعلامية'],subject:'علوم فيزيائية',name:'أستاذة علوم فيزيائية (مثال)',info:'مراجعة مكثفة للكهرباء والميكانيك والفيزياء النووية مع مواضيع الباك السابقة.',contact:null},
+    {branches:['علوم تجريبية'],subject:'علوم الحياة والأرض',name:'أستاذة علوم الحياة والأرض (مثال)',info:'تدريب على تحليل الوثائق والاستدلال العلمي، وحصص مراجعة قبل الباك.',contact:null},
+    {branches:['علوم الإعلامية'],subject:'خوارزميات وبرمجة',name:'أستاذ إعلامية (مثال)',info:'خوارزميات وبرمجة وتمارين تطبيقية على الحاسوب.',contact:null},
+    {branches:['اقتصاد وتصرف'],subject:'اقتصاد',name:'أستاذ اقتصاد وتصرف (مثال)',info:'منهجية التحليل الاقتصادي ودراسات الحالة مع تمارين مصححة.',contact:null},
+    {branches:['آداب'],subject:'فلسفة',name:'أستاذ فلسفة (مثال)',info:'بناء الإنشاء الفلسفي وتحليل النص وتحضير المراجع والشواهد.',contact:null},
+    {branches:['آداب'],subject:'عربية',name:'أستاذة عربية (مثال)',info:'منهجية المقال وتحليل النصوص الأدبية والبلاغة.',contact:null},
+    {branches:'الكل',subject:'إنجليزية',name:'أستاذة إنجليزية (مثال)',info:'التعبير الكتابي وفهم النصوص وتقنيات الإجابة في اختبار الباك.',contact:null}
+  ]
+};
+
+/* ================= أدوات مساعدة ================= */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const store = {
+  get(k,d){try{const v=localStorage.getItem('fb_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('fb_'+k,JSON.stringify(v))}catch(e){}}
+};
+const esc = s => s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+
+/* ================= الوضع الداكن ================= */
+const themeBtn = $('#themeBtn');
+function applyTheme(d){document.documentElement.classList.toggle('dark',d);themeBtn.textContent=d?'☀️':'🌙';store.set('dark',d)}
+applyTheme(store.get('dark', matchMedia('(prefers-color-scheme: dark)').matches));
+themeBtn.onclick = () => applyTheme(!document.documentElement.classList.contains('dark'));
+
+/* ================= البومودورو ================= */
+const MODES = {focus:25*60, short:5*60, long:15*60};
+let pomo = store.get('pomo', {mode:'focus', left:MODES.focus, sessions:0, day:new Date().toDateString()});
+if (pomo.day !== new Date().toDateString()) pomo = {...pomo, sessions:0, day:new Date().toDateString()};
+let timer = null, endAt = 0;
+const fmt = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function drawPomo(){
+  $('#time').textContent = fmt(pomo.left);
+  $('#ring').style.strokeDashoffset = 339.3 * (1 - pomo.left / MODES[pomo.mode]);
+  $('#sessions').textContent = 'جلسات اليوم: ' + pomo.sessions;
+  $$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.mode===pomo.mode));
+  $('#startBtn').textContent = timer ? 'إيقاف مؤقت' : 'ابدأ';
+  document.title = (timer ? fmt(pomo.left)+' · ' : '') + 'Focus Bac';
+  store.set('pomo', pomo);
+}
+function beep(){
+  try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();
+  o.frequency.value=880;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+1);
+  o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+1)}catch(e){}
+}
+function stopTimer(){clearInterval(timer);timer=null}
+function tick(){
+  pomo.left = Math.max(0, Math.round((endAt - Date.now())/1000));
+  if (pomo.left === 0){
+    stopTimer(); beep();
+    if (pomo.mode==='focus'){pomo.sessions++;addLog(25);showChallenge()}
+    pomo.mode = pomo.mode==='focus' ? (pomo.sessions%4===0?'long':'short') : 'focus';
+    pomo.left = MODES[pomo.mode];
+  }
+  drawPomo();
+}
+$('#startBtn').onclick = () => {
+  if (timer){stopTimer();drawPomo();return}
+  endAt = Date.now() + pomo.left*1000; timer = setInterval(tick,500); tick();
+};
+$('#resetBtn').onclick = () => {stopTimer();pomo.left=MODES[pomo.mode];drawPomo()};
+$$('[data-mode]').forEach(b=>b.onclick=()=>{stopTimer();pomo.mode=b.dataset.mode;pomo.left=MODES[pomo.mode];drawPomo()});
+drawPomo();
+
+/* ================= المهام ================= */
+let tasks = store.get('tasks', []);
+function drawTasks(){
+  const ul = $('#taskList');
+  ul.innerHTML = tasks.length ? '' : '<li class="text-sm" style="color:var(--mut)">ما عندك مهام بعد. أضف أول مهمة لليوم.</li>';
+  tasks.forEach((t,i)=>{
+    const li = document.createElement('li');
+    li.className = 'flex items-center gap-3 p-2 rounded-xl';
+    li.style.background = 'var(--bg)';
+    li.innerHTML = `<input type="checkbox" class="w-5 h-5 accent-[var(--brand)]" ${t.done?'checked':''} aria-label="تمت">
+      <span class="flex-1 ${t.done?'line-through opacity-50':''}">${esc(t.text)}</span>
+      <button class="px-2 opacity-60 hover:opacity-100" aria-label="حذف">✕</button>`;
+    li.querySelector('input').onchange = e => {tasks[i].done=e.target.checked;saveTasks()};
+    li.querySelector('button').onclick = () => {tasks.splice(i,1);saveTasks()};
+    ul.appendChild(li);
+  });
+  const d = tasks.filter(t=>t.done).length;
+  $('#taskCount').textContent = tasks.length ? `أنجزت ${d} من ${tasks.length}` : '';
+}
+function saveTasks(){store.set('tasks',tasks);drawTasks()}
+function addTask(){const v=$('#taskIn').value.trim();if(!v)return;tasks.unshift({text:v,done:false});$('#taskIn').value='';saveTasks()}
+$('#taskAdd').onclick = addTask;
+$('#taskIn').onkeydown = e => {if(e.key==='Enter')addTask()};
+drawTasks();
+
+/* ================= الملاحظات ================= */
+const notes = $('#notes'); notes.value = store.get('notes','');
+let nt; notes.oninput = () => {$('#notesState').textContent='جاري الحفظ…';clearTimeout(nt);nt=setTimeout(()=>{store.set('notes',notes.value);$('#notesState').textContent='محفوظة تلقائياً ✓'},400)};
+
+/* ================= أصوات التركيز (Web Audio) ================= */
+let ac, master, active = {};
+function ctx(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=$('#vol').value/100;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+function noiseBuf(type){
+  const c=ctx(),len=c.sampleRate*4,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);let last=0;
+  for(let i=0;i<len;i++){const w=Math.random()*2-1;if(type==='brown'){last=(last+.02*w)/1.02;d[i]=last*3.5}else d[i]=w}
+  return b;
+}
+const makers = {
+  rain(){const c=ctx(),s=c.createBufferSource();s.buffer=noiseBuf('white');s.loop=true;
+    const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=2500;f.Q.value=.5;const g=c.createGain();g.gain.value=.35;
+    s.connect(f).connect(g).connect(master);s.start();return ()=>s.stop()},
+  brown(){const c=ctx(),s=c.createBufferSource();s.buffer=noiseBuf('brown');s.loop=true;
+    const l=c.createGain();l.gain.value=.8;const o=c.createOscillator();o.frequency.value=.12;const og=c.createGain();og.gain.value=.3;
+    o.connect(og).connect(l.gain);s.connect(l).connect(master);s.start();o.start();return ()=>{s.stop();o.stop()}},
+  lofi(){const c=ctx(),chords=[[220,261.6,329.6,392],[174.6,220,261.6,329.6],[196,246.9,293.7,392],[164.8,196,246.9,329.6]];let i=0,stop=false;
+    const play=()=>{if(stop)return;const t=c.currentTime;
+      chords[i++%4].forEach(fq=>{const o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();
+        o.type='triangle';o.frequency.value=fq;f.type='lowpass';f.frequency.value=900;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.8);g.gain.linearRampToValueAtTime(0,t+3.8);
+        o.connect(f).connect(g).connect(master);o.start(t);o.stop(t+4)});
+      setTimeout(play,3600)};
+    play();return ()=>{stop=true}}
+};
+$$('#sounds [data-s]').forEach(b=>b.onclick=()=>{
+  const k=b.dataset.s;
+  if(active[k]){active[k]();delete active[k];b.setAttribute('aria-pressed','false')}
+  else{active[k]=makers[k]();b.setAttribute('aria-pressed','true')}
+});
+$('#vol').oninput = e => {ctx();master.gain.value=e.target.value/100};
+
+/* ================= نظام Pro ================= */
+const DEV=store.get('dev',null)||(()=>{const d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());store.set('dev',d);return d})();
+let isPro = !!store.get('proTok','');
+async function api(b){const r=await fetch('/api/activate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...b,device:DEV})});return r.json()}
+function drawPro(){
+  $$('.ad,#adSlot').forEach(e=>e.style.display=isPro?'none':'');
+  $$('.pro-card').forEach(c=>c.classList.toggle('locked',!isPro));
+  $('#proBtn').textContent = isPro ? 'Pro مفعّل ✓' : 'Pro ⭐';
+}
+const paywall = $('#paywall');
+function openPaywall(feature){
+  if (isPro && feature==='اشتراك Pro') return;
+  $('#pwFeature').textContent = feature ? 'الميزة المطلوبة: ' + feature : '';
+  $('#d17Btn').href = CONFIG.contactLink; $('#codeMsg').textContent=''; $('#codeIn').value='';
+  paywall.showModal();
+}
+paywall.addEventListener('click', e => {if(e.target===paywall)paywall.close()});
+async function activate(){
+  const v=$('#codeIn').value.trim(),m=$('#codeMsg');if(!v)return;
+  m.style.color='var(--mut)';m.textContent='جاري التحقق…';
+  try{const d=await api({code:v,kind:'pro'});
+    if(d.ok){store.set('proTok',d.token);isPro=true;drawPro();m.style.color='var(--ok)';m.textContent='مبروك! تم تفعيل Pro 🎉';setTimeout(()=>paywall.close(),1200)}
+    else{m.style.color='#D94141';m.textContent=d.msg||'الكود غير صحيح.'}}
+  catch(e){m.style.color='#D94141';m.textContent='تعذّر الاتصال بالخادم. تأكد من الانترنت وحاول مجدداً.'}
+}
+$('#codeBtn').onclick = activate;
+$('#codeIn').onkeydown = e => {if(e.key==='Enter')activate()};
+function drawAds(){$$('.ad').forEach(el=>{const a=CONFIG.ads[el.dataset.ad];
+  el.className=(el.className.replace(/card|p-3|text-center/g,'')+' card p-3 text-center').trim();
+  el.innerHTML='<div class="text-xs mb-1" style="color:var(--mut)">إعلان</div>'+(a&&a.img?`<a href="${a.link||'#'}" target="_blank" rel="noopener sponsored"><img src="${a.img}" alt="إعلان" class="w-full rounded-xl"></a>`:`<a href="${CONFIG.contactLink}" target="_blank" rel="noopener" class="font-semibold">📢 مساحتك الإعلانية هنا — تواصل معنا</a>`)});}
+drawAds(); drawPro();
+(async()=>{const t=store.get('proTok','');if(!t)return;try{const d=await api({token:t,kind:'pro'});if(d&&d.ok===false){store.set('proTok','');isPro=false;drawPro()}}catch(e){}})();
+
+/* ================= ① المخطط الذكي ================= */
+$('#plGo').onclick = () => {
+  const days = +$('#plDays').value, hrs = +$('#plHours').value;
+  const subj = $('#plSubj').value.split(/[,،]/).map(s=>s.trim()).filter(Boolean);
+  const out = $('#plOut');
+  if (!days || !hrs || !subj.length){out.textContent='أدخل الأيام والمواد والساعات.';return}
+  const names = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+  const per = Math.max(1, Math.min(subj.length, hrs>=4?3:hrs>=2?2:1)), slot = (hrs/per).toFixed(1).replace('.0','');
+  let html = `<p class="font-semibold">باقي ${days} يوم ≈ ${Math.ceil(days/7)} أسابيع. هذا أسبوعك النموذجي:</p>`;
+  names.forEach((n,d)=>{
+    if (d===6){html+=`<div class="p-2 rounded-xl" style="background:var(--bg)"><b>${n}:</b> مراجعة شاملة لأخطاء الأسبوع + راحة ${hrs>3?'ساعة':'قصيرة'} 🌿</div>`;return}
+    const picks = Array.from({length:per},(_,k)=>subj[(d*per+k)%subj.length]);
+    html+=`<div class="p-2 rounded-xl" style="background:var(--bg)"><b>${n}:</b> ${picks.map(p=>`${esc(p)} (${slot}س)`).join(' ، ')}</div>`;
+  });
+  if (days<=14) html+='<p style="color:var(--mut)">الوقت ضيّق: ركّز على مواضيع الباك السابقة والدروس ذات المعامل الأكبر.</p>';
+  out.innerHTML = html;
+};
+
+/* ================= ② الملخص (استخراجي محلي) ================= */
+const STOP = new Set('في من على إلى عن أن إن كان كانت هذا هذه ذلك التي الذي ما لا هو هي ثم أو و مع قد كل بين عند حتى لقد لكن أي إذا كما بعد قبل le la les de des du un une et en est que qui dans pour par sur au aux ce cette se sa son ses ne pas plus ou'.split(' '));
+const sentences = t => t.replace(/\s+/g,' ').split(/(?<=[.!?؟…])\s+/).map(s=>s.trim()).filter(s=>s.split(' ').length>=5);
+const words = t => (t.toLowerCase().match(/[\p{L}]{3,}/gu)||[]).filter(w=>!STOP.has(w));
+$('#sumGo').onclick = () => {
+  const t = $('#sumIn').value, out = $('#sumOut'), ss = sentences(t);
+  out.classList.remove('hidden');
+  if (ss.length<3){out.textContent='النص قصير. الصق درساً من ثلاث جمل على الأقل.';return}
+  const freq={}; words(t).forEach(w=>freq[w]=(freq[w]||0)+1);
+  const scored = ss.map((s,i)=>({s,i,sc:words(s).reduce((a,w)=>a+freq[w],0)/Math.sqrt(words(s).length||1)}));
+  const n = Math.min(6, Math.max(2, Math.ceil(ss.length*.3)));
+  const top = scored.sort((a,b)=>b.sc-a.sc).slice(0,n).sort((a,b)=>a.i-b.i);
+  out.innerHTML = '<p class="font-semibold mb-2">الخلاصة:</p><ul class="list-disc pr-5 space-y-1">'+top.map(x=>`<li>${esc(x.s)}</li>`).join('')+'</ul>';
+};
+
+/* ================= ③ الكويز ================= */
+let Q = {list:[],i:0,score:0,streak:0};
+$('#qGo').onclick = () => {
+  const t = $('#qIn').value, ss = sentences(t), pool = [...new Set(words(t).filter(w=>w.length>=4))];
+  if (ss.length<3 || pool.length<6){alert('الصق درساً أطول قليلاً (3 جمل على الأقل) لنصنع لك الأسئلة.');return}
+  const list = [];
+  shuffle(ss).forEach(s=>{
+    if (list.length>=5) return;
+    const cand = words(s).filter(w=>w.length>=4).sort((a,b)=>b.length-a.length)[0];
+    if (!cand) return;
+    const wrong = shuffle(pool.filter(w=>w!==cand)).slice(0,3);
+    list.push({q:s.replace(new RegExp(cand,'i'),'_____'), a:cand, opts:shuffle([cand,...wrong])});
+  });
+  Q = {list,i:0,score:0,streak:0};
+  $('#qSetup').classList.add('hidden'); $('#qPlay').classList.remove('hidden'); showQ();
+};
+function showQ(){
+  const q = Q.list[Q.i];
+  if (!q){
+    const best = store.get('best',0); if (Q.score>best) store.set('best',Q.score);
+    $('#qPlay').innerHTML = `<div class="text-center py-6"><div class="display text-5xl">${Q.score} نقطة</div>
+      <p class="mt-2" style="color:var(--mut)">أفضل نتيجة لك: ${Math.max(best,Q.score)}</p>
+      <button class="btn mt-5" onclick="location.hash='#pro';resetQuiz()">العب من جديد</button></div>`;
+    return;
+  }
+  $('#qNum').textContent = `سؤال ${Q.i+1} / ${Q.list.length}` + (Q.streak>1?` 🔥×${Q.streak}`:'');
+  $('#qScore').textContent = Q.score + ' نقطة';
+  $('#qText').textContent = q.q;
+  const box = $('#qOpts'); box.innerHTML = '';
+  q.opts.forEach(o=>{
+    const b = document.createElement('button'); b.className='opt'; b.textContent=o;
+    b.onclick = () => {
+      $$('#qOpts .opt').forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add('good')});
+      if (o===q.a){Q.streak++;Q.score+=10+Math.min(Q.streak-1,4)*5}
+      else{b.classList.add('bad');Q.streak=0}
+      setTimeout(()=>{Q.i++;showQ()},1100);
+    };
+    box.appendChild(b);
+  });
+}
+function resetQuiz(){location.reload()}
+
+
+/* ================= العداد التنازلي ================= */
+const EXAM = new Date('2027-06-02T08:00:00+01:00');
+function drawCd(){
+  let d=Math.max(0,EXAM-Date.now())/1000;const v=[['يوم',Math.floor(d/86400)],['ساعة',Math.floor(d%86400/3600)],['دقيقة',Math.floor(d%3600/60)],['ثانية',Math.floor(d%60)]];
+  $('#cd').innerHTML=v.map(x=>`<div class="rounded-xl px-3 py-2 min-w-[64px]" style="background:var(--bg);border:1px solid var(--line)"><div class="display text-3xl tabular-nums">${String(x[1]).padStart(2,'0')}</div><div class="text-xs" style="color:var(--mut)">${x[0]}</div></div>`).join('');
+}
+drawCd(); setInterval(drawCd,1000);
+
+/* ================= تحدي 25 دقيقة ================= */
+const challenge=$('#challenge');
+let log = store.get('log',{});
+function addLog(m){const k=new Date().toISOString().slice(0,10);log[k]=(log[k]||0)+m;store.set('log',log);drawDash()}
+function showChallenge(){
+  const g=$('#goal').value.trim(); if(!g)return;
+  $('#chFace').textContent='🤔';$('#chTitle').textContent='انتهى الوقت!';$('#chMsg').textContent='هدفك كان: '+g+'. هل أنجزته؟';
+  $('#chBtns').classList.remove('hidden');$('#chClose').classList.add('hidden');challenge.showModal();
+}
+function chRes(ok){
+  $('#chFace').textContent=ok?'🥳':'😫';$('#chTitle').textContent=ok?'أحسنت!':'أوه!';
+  $('#chMsg').textContent=ok?'أنجزت تحدي الـ25 دقيقة. استمر على هذا النسق!':'فاتك الوقت، كن أسرع المرة القادمة! 💪';
+  if(ok)$('#goal').value='';
+  $('#chBtns').classList.add('hidden');$('#chClose').classList.remove('hidden');
+}
+
+/* ================= تلاوات القرآن (روابط مباشرة، يمكن تعديلها) ================= */
+const SUR=[['سورة الملك',67,1,30],['سورة الرحمن',55,1,78],['سورة يس',36,1,83],['آية الكرسي',2,255,255]];
+const RECS=['Alafasy_128kbps','Husary_128kbps','Abdul_Basit_Murattal_192kbps'];
+const p3=n=>String(n).padStart(3,'0');
+const qa=new Audio(); let qi=-1,qn=0,qr=0,qt=null;
+const qSt=t=>$('#qStat').textContent=t;
+const qSrc=()=>'https://everyayah.com/data/'+RECS[qr]+'/'+p3(SUR[qi][1])+p3(SUR[qi][2]+qn)+'.mp3';
+function qStop(){clearTimeout(qt);qa.pause();qi=-1;$$('#quran button').forEach(x=>x.setAttribute('aria-pressed','false'))}
+function qLoad(){clearTimeout(qt);qSt('جاري التحميل…');qa.src=qSrc();qa.volume=$('#vol').value/100;qa.play().catch(()=>{});qt=setTimeout(()=>{if(qi>=0&&qa.readyState<3)qFail()},12000)}
+function qFail(){clearTimeout(qt);if(qi<0)return;if(qr<RECS.length-1){qr++;qLoad()}else{const u=qSrc();qStop();qSt('تعذّر تحميل التلاوة. تأكد من الانترنت أو أن موقع everyayah.com غير محجوب على شبكتك. ('+u+')')}}
+qa.onerror=qFail;
+qa.onplaying=()=>{clearTimeout(qt);if(qi>=0)qSt('يشتغل الآن: '+SUR[qi][0]+' ، آية '+(SUR[qi][2]+qn))};
+qa.onended=()=>{if(qi<0)return;qn=(qn+1)%(SUR[qi][3]-SUR[qi][2]+1);qLoad()};
+SUR.forEach((q,i)=>{const b=document.createElement('button');b.className='tab text-center text-sm';b.textContent=q[0];b.setAttribute('aria-pressed','false');
+  b.onclick=()=>{const on=qi===i;qStop();qSt('');if(!on){ma.pause();qi=i;qn=0;qr=0;qLoad();b.setAttribute('aria-pressed','true')}};
+  $('#quran').appendChild(b)});
+const ma=new Audio(); let mt=[],mi=0;
+function playMy(){if(!mt.length)return;qa.pause();qi=-1;$$('#quran button').forEach(x=>x.setAttribute('aria-pressed','false'));ma.src=URL.createObjectURL(mt[mi]);ma.volume=$('#vol').value/100;ma.play().catch(()=>{});$('#myTrack').textContent='يشتغل الآن: '+mt[mi].name}
+ma.onended=()=>{mi=(mi+1)%mt.length;playMy()};
+$('#myMusic').onchange=e=>{mt=[...e.target.files];mi=0;playMy()};
+$('#vol').addEventListener('input',e=>{qa.volume=ma.volume=e.target.value/100});
+
+/* ================= الشعب والمعدل ================= */
+const BR={
+ 'رياضيات':{ok:1,s:[['رياضيات',4],['علوم فيزيائية',4],['علوم الحياة والأرض',1],['فلسفة',1],['فرنسية',1],['إنجليزية',1],['عربية',1],['إعلامية',1],['تربية بدنية',1]],h:['كليات العلوم والرياضيات','المدارس الهندسية (مباشرة أو عبر الأقسام التحضيرية)','الإعلامية والذكاء الاصطناعي','الدراسات الجوية والتقنية']},
+ 'علوم تجريبية':{ok:1,s:[['علوم فيزيائية',4],['علوم الحياة والأرض',4],['رياضيات',3],['فلسفة',1],['فرنسية',1],['إنجليزية',1],['عربية',1],['إعلامية',1],['تربية بدنية',1]],h:['الطب وطب الأسنان والصيدلة','الهندسة والعلوم البيولوجية','المعاهد العليا للعلوم الطبية والتمريض','الفلاحة والبيئة']},
+ 'علوم الإعلامية':{ok:0,note:'مواد الشعبة حسب دليل التوجيه 2026: رياضيات، خوارزميات وبرمجة، علوم فيزيائية، أنظمة وتكنولوجيا المعلومات. ضوارب الخوارزميات والأنظمة غير متوفرة عندي فخاناتها فارغة، وبقية الضوارب من مصدر خاص (2024). أدخلها من منشور الوزارة.',s:[['رياضيات',3],['خوارزميات وبرمجة',null],['علوم فيزيائية',2],['أنظمة وتكنولوجيا المعلومات',null],['فلسفة',1],['فرنسية',1],['إنجليزية',1],['عربية',1],['تربية بدنية',1]],h:['الإعلامية والبرمجة','هندسة البرمجيات والذكاء الاصطناعي','الأمن السيبراني والشبكات','المدارس الهندسية']},
+ 'علوم تقنية':{ok:0,note:'ضوارب هذه الشعبة من مصدر خاص (2024): التكنولوجيا ضارب 3 للكتابي و1 للتطبيقي، ووضعتها هنا مجموعة (4) فأدخل معدل المادة. طابقها مع المنشور الرسمي.',s:[['تكنولوجيا',4],['رياضيات',3],['علوم فيزيائية',3],['فلسفة',1],['فرنسية',1],['إنجليزية',1],['عربية',1],['إعلامية',1],['تربية بدنية',1]],h:['المدارس الهندسية','المعاهد العليا للدراسات التكنولوجية','الهندسة الميكانيكية والكهربائية','التكوين المهني العالي']},
+ 'اقتصاد وتصرف':{ok:0,note:'ضوارب هذه الشعبة من مصادر خاصة متطابقة (2024 و2025) وليست من منشور الوزارة. طابقها مع المنشور الرسمي.',s:[['اقتصاد',3],['تصرف',3],['تاريخ وجغرافيا',2],['رياضيات',2],['فلسفة',1],['فرنسية',1],['إنجليزية',1],['عربية',1],['إعلامية',1],['تربية بدنية',1]],h:['الاقتصاد والتصرف والمالية','المحاسبة والتدقيق','التجارة الدولية والتسويق','الحقوق والعلوم السياسية']},
+ 'آداب':{ok:0,note:'لم أجد ضوارب اختبارات هذه الشعبة بمصدر موثوق، فخانات الضوارب فارغة. أدخلها من منشور وزارة التربية.',s:[['عربية',null],['فلسفة',null],['تاريخ وجغرافيا',null],['فرنسية',null],['إنجليزية',null],['تربية بدنية',null]],h:['الآداب واللغات والترجمة','الحقوق والعلوم السياسية','الإعلام والاتصال','التعليم وعلم الاجتماع والنفس']}
+};
+// الصيغة الإجمالية FG حسب دليل التوجيه الجامعي 2026 (ص 16): FG = 4·MG + مجموع (ضارب × عدد المادة)
+const FG={
+ 'آداب':[['عربية',1.5],['فلسفة',1.5],['تاريخ وجغرافيا',1],['فرنسية',1],['إنجليزية',1]],
+ 'رياضيات':[['رياضيات',2],['علوم فيزيائية',1.5],['علوم الحياة والأرض',0.5],['فرنسية',1],['إنجليزية',1]],
+ 'علوم تجريبية':[['رياضيات',1],['علوم فيزيائية',1.5],['علوم الحياة والأرض',1.5],['فرنسية',1],['إنجليزية',1]],
+ 'اقتصاد وتصرف':[['اقتصاد',1.5],['تصرف',1.5],['رياضيات',0.5],['تاريخ وجغرافيا',0.5],['فرنسية',1],['إنجليزية',1]],
+ 'علوم تقنية':[['تكنولوجيا',1.5],['رياضيات',1.5],['علوم فيزيائية',1],['فرنسية',1],['إنجليزية',1]],
+ 'علوم الإعلامية':[['رياضيات',1.5],['خوارزميات وبرمجة',1.5],['علوم فيزيائية',0.5],['أنظمة وتكنولوجيا المعلومات',0.5],['فرنسية',1],['إنجليزية',1]]
+};
+const SUBJECTS=[...new Set(Object.values(BR).flatMap(b=>b.s.map(x=>x[0])))];
+let curB = store.get('branch','رياضيات'), grades = store.get('grades',{}), coefs = store.get('coefs2',{});
+function drawBac(){
+  $('#bTabs').innerHTML=''; Object.keys(BR).forEach(k=>{const b=document.createElement('button');b.className='tab';b.textContent=k;b.setAttribute('aria-pressed',k===curB);
+    b.onclick=()=>{curB=k;store.set('branch',k);drawBac();drawLib()};$('#bTabs').appendChild(b)});
+  $('#bHor').innerHTML=BR[curB].h.map(x=>`<li>${x}</li>`).join('');
+  $('#bWarn').textContent=BR[curB].ok?'':BR[curB].note;
+  $('#bRows').innerHTML=BR[curB].s.map(([n,c],i)=>`<div class="flex items-center gap-2"><span class="flex-1 text-sm">${n}</span>
+    <input data-i="${i}" data-t="g" type="number" min="0" max="20" step="0.25" class="inp" style="width:5.5rem" placeholder="/20" value="${grades[curB+n]??''}" aria-label="عدد ${n}">
+    <span class="text-xs" style="color:var(--mut)">ض</span><input data-i="${i}" data-t="c" type="number" min="0" step="0.5" class="inp" style="width:4.2rem" value="${coefs[curB+n]??c??''}" aria-label="ضارب ${n}"></div>`).join('');
+  $$('#bRows input,#bAnn').forEach(i=>i.oninput=calcBac); calcBac();
+}
+function calcBac(){
+  let sum=0,w=0,miss=0;
+  $$('#bRows input').forEach(el=>{const k=curB+BR[curB].s[el.dataset.i][0];const v=el.value===''?undefined:+el.value;if(el.dataset.t==='g')grades[k]=v;else coefs[k]=v});
+  BR[curB].s.forEach(([n,c0])=>{const k=curB+n,g=grades[k],c=coefs[k]??c0;
+    if(typeof g==='number'&&!isNaN(g)){if(c==null){miss++;return}sum+=Math.min(20,g)*c;w+=c}});
+  store.set('grades',grades);store.set('coefs2',coefs);
+  const m=w?sum/w:null, ann=$('#bAnn').value===''?null:+$('#bAnn').value;
+  const f=m===null?null:ann===null?m:Math.max(m,(3*m+ann)/4);
+  $('#bRes').textContent=f===null?'—':f.toFixed(2);
+  $('#bMention').textContent=f===null?(miss?'أدخل ضوارب المواد':''):(ann!==null?'أعلى الصيغتين: معدل الاختبارات، أو (معدل الاختبارات×3 + المعدل السنوي)÷4. ':'')+(f>=16?'مستوى حسن جداً':f>=14?'مستوى حسن':f>=12?'مستوى قريب من حسن':f>=10?'ناجح':'دون المعدل: واصل المراجعة');
+  const F=FG[curB],fg=$('#bFg');
+  if(f===null){fg.textContent=''}else{const miss=F.filter(x=>typeof grades[curB+x[0]]!=='number');
+    fg.textContent=miss.length?'لحساب الصيغة الإجمالية FG أدخل أيضاً: '+miss.map(x=>x[0]).join('، '):'الصيغة الإجمالية FG (دليل التوجيه 2026): '+(4*f+F.reduce((a,x)=>a+x[1]*Math.min(20,grades[curB+x[0]]),0)).toFixed(2)}
+  drawDash();
+}
+drawBac();
+
+/* روابط مباشرة مؤكدة بصيغة 'السنة|الشعبة|المادة': رابط */
+const ARCH = {};
+/* ================= أرشيف الإصلاحات ================= */
+for(let y=2026;y>=1994;y--)$('#aY').add(new Option(y,y));
+Object.keys(BR).forEach(k=>$('#aB').add(new Option(k,k)));
+function upA(){const d=ARCH[[$('#aY').value,$('#aB').value,$('#aS').value.trim()].join('|')];$('#aGo').textContent=d?'حمّل الإصلاح (رابط مباشر)':'ابحث عن الإصلاح';if(d){$('#aGo').href=d;return}$('#aGo').href='https://www.google.com/search?q='+encodeURIComponent(`إصلاح باكالوريا ${$('#aY').value} ${$('#aS').value} شعبة ${$('#aB').value} تونس`)}
+['aY','aB','aS'].forEach(i=>$('#'+i).oninput=upA); upA();
+
+/* ================= لوحة الأداء (Pro) ================= */
+function drawDash(){
+  const el=$('#dash'); if(!el)return;
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5);return [d.toISOString().slice(0,10),d.toLocaleDateString('ar-TN',{weekday:'short'})]});
+  const mx=Math.max(25,...days.map(d=>log[d[0]]||0)), tot=days.reduce((a,d)=>a+(log[d[0]]||0),0);
+  const done=tasks.filter(t=>t.done).length, rate=tasks.length?Math.round(done/tasks.length*100):0;
+  const gr=Object.entries(grades).filter(([k,v])=>k.startsWith(curB)&&typeof v==='number').map(([k,v])=>[k.slice(curB.length),v]).sort((a,b)=>b[1]-a[1]);
+  el.innerHTML=`<div class="flex items-end gap-2 h-28 mb-1">${days.map(d=>`<div class="flex-1 flex flex-col items-center justify-end h-full"><div class="w-full rounded-t-lg" style="height:${Math.max(4,(log[d[0]]||0)/mx*100)}%;background:var(--brand)"></div></div>`).join('')}</div>
+  <div class="flex gap-2 mb-4 text-xs" style="color:var(--mut)">${days.map(d=>`<span class="flex-1 text-center">${d[1]}</span>`).join('')}</div>
+  <p class="text-sm">تركيز آخر 7 أيام: <b>${tot} دقيقة</b> ، إنجاز المهام: <b>${rate}%</b></p>
+  <div class="h-2 rounded-full my-2" style="background:var(--line)"><div class="h-2 rounded-full" style="width:${rate}%;background:var(--ok)"></div></div>
+  <p class="text-sm mt-3">${gr.length>1?`نقطة قوتك: <b>${gr[0][0]}</b> (${gr[0][1]}) ، تحتاج دعماً في: <b>${gr[gr.length-1][0]}</b> (${gr[gr.length-1][1]})`:'أدخل أعدادك في حاسبة المعدل لنكتشف نقاط قوتك وضعفك.'}</p>`;
+}
+drawDash();
+
+
+/* ====== أرشيف: أضف هنا الروابط المباشرة المؤكدة بصيغة 'السنة|الشعبة|المادة': رابط ====== */
+/* ====== المكتبة ====== */
+let LIBJ=[];
+fetch('library.json').then(r=>r.json()).then(d=>{LIBJ=Array.isArray(d)?d:[];drawLib()}).catch(()=>{});
+let myFiles=[],urls_=[];
+const IDB={db:null,open(){return this.db||(this.db=new Promise((ok,no)=>{const r=indexedDB.open('focusbac',1);r.onupgradeneeded=()=>r.result.createObjectStore('lib',{keyPath:'id'});r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))},
+  async all(){try{const d=await this.open();return await new Promise(ok=>{const q=d.transaction('lib').objectStore('lib').getAll();q.onsuccess=()=>ok(q.result);q.onerror=()=>ok([])})}catch(e){return[]}},
+  async put(v){const d=await this.open();return new Promise((ok,no)=>{const t=d.transaction('lib','readwrite');t.objectStore('lib').put(v);t.oncomplete=ok;t.onerror=()=>no(t.error)})},
+  async del(id){const d=await this.open();return new Promise(ok=>{const t=d.transaction('lib','readwrite');t.objectStore('lib').delete(id);t.oncomplete=ok;t.onerror=ok})}};
+IDB.all().then(a=>{myFiles=a;drawLib()});
+function drawLib(){
+  $('#lTabs').innerHTML='';Object.keys(BR).forEach(k=>{const b=document.createElement('button');b.className='tab';b.textContent=k;b.setAttribute('aria-pressed',k===curB);b.onclick=()=>{curB=k;store.set('branch',k);drawBac();drawLib()};$('#lTabs').appendChild(b)});
+  urls_.forEach(u=>URL.revokeObjectURL(u));urls_=[];
+  const shared=LIBJ.filter(i=>i.branch===curB||i.branch==='الكل').map(i=>`<article class="card p-5"><h3 class="font-semibold mb-2">${esc(i.title)}</h3><p class="leading-7 text-sm" style="color:var(--mut)">${esc(i.note||'')}</p><a class="btn btn-ghost w-full mt-3" href="${esc(i.file)}" target="_blank" rel="noopener">فتح / تحميل</a></article>`);
+  const mine=myFiles.filter(f=>f.b===curB).map(f=>{const u=URL.createObjectURL(f.blob);urls_.push(u);
+    return `<article class="card p-5"><span class="text-xs px-2 py-1 rounded-full" style="background:var(--bg);border:1px solid var(--line)">ملفي</span><h3 class="font-semibold my-2">${esc(f.t)}</h3>${f.type.startsWith('image/')?`<img src="${u}" alt="" class="rounded-xl mb-2 max-h-40 w-full object-cover">`:''}
+      <div class="flex gap-2 flex-wrap"><a class="btn btn-ghost flex-1" href="${u}" target="_blank" rel="noopener">فتح</a><button class="btn btn-ghost" data-pub="${f.id}">نسخ سطر النشر</button><button class="btn btn-ghost" data-del="${f.id}" aria-label="حذف">🗑</button></div></article>`});
+  const all=[...shared,...mine];
+  $('#lGrid').innerHTML=all.length?all.join(''):'<p style="color:var(--mut)">ستُنشر تلخيصات هذه الشعبة قريباً. يمكنك رفع تلخيصك الخاص بالزر أعلاه.</p>';
+}
+$('#lGrid').onclick=async e=>{
+  const d=e.target.closest('[data-del]'),pu=e.target.closest('[data-pub]');
+  if(d){await IDB.del(+d.dataset.del);myFiles=myFiles.filter(f=>f.id!==+d.dataset.del);drawLib()}
+  if(pu){const f=myFiles.find(x=>x.id===+pu.dataset.pub);const line=JSON.stringify({branch:f.b,title:f.t,file:'pdf/'+f.name,note:''});
+    try{await navigator.clipboard.writeText(line);pu.textContent='تم النسخ ✓'}catch(err){prompt('انسخ هذا السطر:',line)}}
+};
+$('#lUp').onchange=async e=>{
+  for(const f of e.target.files){
+    if(f.size>25*1024*1024){alert('الملف «'+f.name+'» أكبر من 25 ميغابايت.');continue}
+    const rec={id:Date.now()+Math.floor(Math.random()*1000),b:curB,t:f.name.replace(/\.[^.]+$/,''),name:f.name,type:f.type||'application/octet-stream',blob:f};
+    try{await IDB.put(rec);myFiles.push(rec)}catch(err){alert('تعذّر حفظ الملف على هذا المتصفح.')}
+  }
+  e.target.value='';drawLib();
+};
+drawLib();
+
+/* ================= الألعاب ================= */
+let M={s:0,t:0,iv:null,a:0};
+function mq(){
+  const r=n=>1+Math.random()*n|0,T=r(7);let q,a;
+  if(T===1){const A=r(4),B=r(6),c=r(4);q='f(x) = '+A+'x² + '+B+'x ، احسب f′('+c+')';a=2*A*c+B}
+  else if(T===2){const c=r(3)+1,k=r(4);q='lim (x→+∞) ('+k*c+'x² + '+r(5)+') / ('+c+'x² + '+r(5)+')';a=k}
+  else if(T===3){const A=r(5),B=r(6);q='ln(e^'+A+') + e^(ln '+B+') = ؟';a=A+B}
+  else if(T===4){const t=[[3,4,5],[5,12,13],[8,15,17],[6,8,10]][r(4)-1];q='احسب |z| حيث z = '+t[0]+' + '+t[1]+'i';a=t[2]}
+  else if(T===5){const n=r(8)+4;q='عدد طرق اختيار عنصرين من '+n+' عناصر: C('+n+',2)';a=n*(n-1)/2}
+  else if(T===6){const A=r(5);q='متتالية هندسية u(n) = '+A+'·2^n ، احسب u(3)';a=A*8}
+  else{const k=r(6)+1;q='احسب ∫ من 0 إلى '+k+' للدالة 2x dx';a=k*k}
+  M.a=a;$('#mQ').textContent=q;$('#mIn').value='';$('#mIn').focus()}
+$('#mGo').onclick=()=>{M.s=0;M.t=30;$('#mIn').disabled=false;mq();clearInterval(M.iv);M.iv=setInterval(()=>{M.t--;$('#mInfo').textContent='الوقت '+M.t+' ث ، النقاط '+M.s;if(M.t<=0){clearInterval(M.iv);$('#mIn').disabled=true;const b=Math.max(store.get('mBest',0),M.s);store.set('mBest',b);$('#mQ').textContent='انتهى! نقاطك '+M.s+' (الأفضل '+b+')'}},1000)};
+$('#mIn').onkeydown=e=>{if(e.key==='Enter'&&M.t>0){if(+e.target.value===M.a)M.s++;mq()}};
+let mem=null,memIv=null;
+function memBuild(){
+  clearInterval(memIv);mem={open:[],lock:true,found:0,moves:0,cards:[]};
+  const P=[['(ln x)′','1/x'],['(eˣ)′','eˣ'],['sin²x + cos²x','1'],['|z|²','z · z̄'],['قانون أوم','U = R × I'],['n!','1×2×…×n']];
+  $('#memGrid').innerHTML='';
+  shuffle(P.flatMap((x,i)=>[{t:x[0],id:i},{t:x[1],id:i}])).forEach(c=>{
+    const b=document.createElement('button');b.type='button';b.className='opt text-center text-sm';b.style.cssText='padding:1rem .2rem;min-height:4rem';
+    b.textContent='❓';b.dataset.id=c.id;b.dataset.t=c.t;b.onclick=()=>memFlip(b);$('#memGrid').appendChild(b);mem.cards.push(b)});
+}
+function memFlip(b){
+  if(!mem||mem.lock||b.dataset.done||mem.open.includes(b))return;
+  b.textContent=b.dataset.t;mem.open.push(b);
+  if(mem.open.length<2)return;
+  mem.moves++;const x=mem.open[0],y=mem.open[1];
+  if(x.dataset.id===y.dataset.id){x.dataset.done=y.dataset.done='1';x.classList.add('good');y.classList.add('good');mem.open=[];mem.found++;
+    $('#memInfo').textContent=mem.found===6?'أحسنت! أنهيتها في '+mem.moves+' محاولة 🎉':'صحيح ✓ تبقّى '+(6-mem.found)+' أزواج'}
+  else{mem.lock=true;$('#memInfo').textContent='ليست متطابقة، ركّز!';setTimeout(()=>{x.textContent=y.textContent='❓';mem.open=[];mem.lock=false},900)}
+}
+function memStart(){
+  memBuild();$('#memNew').textContent='إعادة اللعبة';mem.cards.forEach(b=>b.textContent=b.dataset.t);let n=3;
+  $('#memInfo').textContent='احفظ أماكن البطاقات… '+n;
+  memIv=setInterval(()=>{n--;if(n>0){$('#memInfo').textContent='احفظ أماكن البطاقات… '+n;return}
+    clearInterval(memIv);mem.cards.forEach(b=>b.textContent='❓');mem.lock=false;$('#memInfo').textContent='ابدأ المطابقة: اقلب بطاقتين.'},1000);
+}
+$('#memNew').onclick=memStart; memBuild();
+
+/* ================= اسأل الذكاء الاصطناعي ================= */
+let chat=[];
+function aiAdd(role,t){const d=document.createElement('div');d.className=role==='u'?'p-3 rounded-xl':'p-3 rounded-xl';d.style.background=role==='u'?'var(--bg)':'transparent';d.style.border='1px solid var(--line)';d.textContent=t;$('#aiLog').appendChild(d);$('#aiLog').scrollTop=1e6;return d}
+async function ask(){
+  const q=$('#aiIn').value.trim();if(!q)return;
+  aiAdd('u',q);$('#aiIn').value='';chat.push({role:'user',content:q});
+  const el=aiAdd('a','…');
+  try{const r=await fetch('/api/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages:chat})});const d=await r.json();if(r.status===429){chat.pop();el.textContent=d.text||'وصلت للحد اليومي.';return}if(!r.ok||!d.text)throw 0;chat.push({role:'assistant',content:d.text});el.textContent=d.text}
+  catch(e){chat.pop();el.textContent='الخدمة غير مفعّلة بعد: أضف ملف api/chat.js ومتغير ANTHROPIC_API_KEY على Vercel.'}
+}
+$('#aiGo').onclick=ask;$('#aiIn').onkeydown=e=>{if(e.key==='Enter')ask()};
+
+
+/* ================= قراءة الصور وملفات PDF ================= */
+function loadScript(u){return new Promise((ok,no)=>{const e=document.createElement('script');e.src=u;e.onload=ok;e.onerror=no;document.head.appendChild(e)})}
+async function fileText(f,st){
+  if(f.type==='application/pdf'){
+    if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}
+    const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let t='';
+    for(let i=1;i<=Math.min(pdf.numPages,30);i++){st('قراءة الصفحة '+i+' من '+pdf.numPages+'…');const c=await(await pdf.getPage(i)).getTextContent();t+=c.items.map(x=>x.str).join(' ')+' '}
+    if(t.trim().length<50)throw new Error('scan');return t}
+  if(!window.Tesseract)await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');
+  st('جاري تحليل الصورة، قد يستغرق دقيقة…');
+  return (await Tesseract.recognize(f,'ara+fra')).data.text;
+}
+function bindFile(inp,area,stEl){$(inp).onchange=async e=>{const f=e.target.files[0];if(!f)return;const st=t=>$(stEl).textContent=t;
+  try{$(area).value=await fileText(f,st);st('تمت القراءة ✓ يمكنك مراجعة النص ثم المتابعة.')}
+  catch(err){st(err.message==='scan'?'هذا PDF عبارة عن صور ممسوحة. ارفع صفحاته كصور.':'تعذّرت القراءة. جرّب ملفاً آخر أو تأكد من الانترنت.')}e.target.value=''}}
+bindFile('#sumFile','#sumIn','#sumSt');bindFile('#qFile','#qIn','#qSt');
+
+/* ================= حفّزني ================= */
+const MOT=['الباك ماراطون موش سباق 100 متر: المهم تكمل بنفس منتظم.','ابدأ بأصعب مادة وإنت في قمة تركيزك، والخفيف خليه للمساء.','25 دقيقة تركيز كاملة تسوى ساعتين وإنت مشتت. جرّب البومودورو!','كل تمرين تحله اليوم هو نقطة تربحها يوم الباك.','نصيحة: بعد كل درس، اكتب 3 أفكار بدون ما تشوف الكراس.','حاسبة المعدل تقولك وين تركز: حسّن المادة اللي ضاربها أكبر أولاً.','النوم الكافي يثبّت المعلومات أكثر من ساعة مراجعة زايدة.','حلّ مواضيع الباك السابقة بالوقت الحقيقي، والوقت يتعلّم بالتدريب.','ما تقارن روحك بغيرك، قارن روحك بنفسك من أسبوع.','شوية شوية: 3 ساعات يومياً بانتظام أحسن من 10 ساعات في يوم واحد.','اشرب الماء وتحرك 5 دقايق بين الجلسات، مخّك يشكرك.','الغلط في التمرين ماهوش فشل، هو بالضبط الحاجة اللي تحتاج تراجعها.','سجّل أسئلة الأستاذ اللي ما فهمتهاش وسولها في أقرب فرصة.','حط هاتفك بعيد وقت التركيز؛ الإشعارات تسرق مخّك.','راجع درس اليوم قبل ما تنام، ودرس أمس صباحاً: التكرار المتباعد يثبّت.','أنت قادر! كل يوم تعدّي هو يوم أقرب للنجاح بإذن الله 💪'];
+let mlast=-1;$('#motBtn').onclick=()=>{let i;do{i=Math.random()*MOT.length|0}while(i===mlast&&MOT.length>1);mlast=i;$('#motTxt').textContent=MOT[i]};
+
+
+/* ================= معركة الباك (Pro) ================= */
+const BQ=[
+ {s:'رياضيات',q:'ما مشتقة الدالة ln(x² + 1) ؟',o:['2x / (x² + 1)','1 / (x² + 1)','2x','ln(2x)'],a:0},
+ {s:'رياضيات',q:'ما قيمة lim (x→0) sin(x) / x ؟',o:['1','0','+∞','غير موجودة'],a:0},
+ {s:'رياضيات',q:'ما الدالة الأصلية للدالة 1/x على ]0 ، +∞[ ؟',o:['ln x','1/x²','eˣ','−1/x²'],a:0},
+ {s:'رياضيات',q:'حلّا المعادلة z² + 1 = 0 في مجموعة الأعداد المركبة هما:',o:['i و −i','1 و −1','2i و −2i','لا حل'],a:0},
+ {s:'رياضيات',q:'إذا كان A و B حدثين غير متلائمين، فإن P(A ∪ B) تساوي:',o:['P(A) + P(B)','P(A) × P(B)','P(A) − P(B)','1'],a:0},
+ {s:'رياضيات',q:'مجموع المتتالية الهندسية Σ qⁿ (n من 0 إلى ∞) مع |q| < 1 يساوي:',o:['1 / (1 − q)','1 / (1 + q)','q / (1 − q)','1 − q'],a:0},
+ {s:'رياضيات',q:'مشتقة الدالة eˣ هي:',o:['eˣ','x·eˣ⁻¹','1/eˣ','ln x'],a:0},
+ {s:'فيزياء',q:'ما وحدة قياس السعة الكهربائية للمكثف؟',o:['الفاراد (F)','الهنري (H)','الأوم (Ω)','الواط (W)'],a:0},
+ {s:'فيزياء',q:'ثابت الزمن τ لدارة RC يساوي:',o:['R × C','R / C','C / R','R + C'],a:0},
+ {s:'فيزياء',q:'نصف عمر نواة مشعة t½ يساوي:',o:['ln 2 / λ','λ / ln 2','1 / λ','2λ'],a:0},
+ {s:'فيزياء',q:'يعبّر عن القانون الثاني لنيوتن في معلم غاليلي بالعلاقة:',o:['ΣF = m·a','ΣF = m / a','ΣF = m·v','ΣF = a / m'],a:0},
+ {s:'فيزياء',q:'الدور الذاتي T₀ لدارة LC مثالية يساوي:',o:['2π√(L·C)','2π / √(L·C)','√(L·C)','2π·L·C'],a:0},
+ {s:'علوم الحياة والأرض',q:'في أي عضية خلوية تتم معظم عمليات التنفس الخلوي المنتجة للـ ATP؟',o:['الميتوكندري','النواة','الجسيم الحال','جهاز غولجي'],a:0},
+ {s:'علوم الحياة والأرض',q:'في الـ ADN تقترن القاعدة الأدينين (A) بالقاعدة:',o:['التيمين (T)','السيتوزين (C)','الغوانين (G)','اليوراسيل (U)'],a:0},
+ {s:'علوم الحياة والأرض',q:'ينتج الانقسام الاختزالي (الميوز) خلايا:',o:['أحادية الصيغة الصبغية n','ثنائية الصيغة الصبغية 2n','متطابقة وراثياً مع الأم','بلا نواة'],a:0},
+ {s:'علوم الحياة والأرض',q:'ترتبط الركيزة بالأنزيم على مستوى:',o:['الموقع الفعّال','الغشاء الخلوي','النواة','الصبغي'],a:0},
+ {s:'علوم الحياة والأرض',q:'الخلايا المنتجة للأجسام المضادة هي:',o:['الخلايا البلازمية (المنحدرة من LB)','الكريات الحمراء','الخلايا LT8','الصفائح الدموية'],a:0},
+ {s:'فلسفة',q:'صاحب العبارة «أنا أفكر إذن أنا موجود» هو:',o:['ديكارت','كانط','هيغل','سبينوزا'],a:0},
+ {s:'فلسفة',q:'قال «الإنسان حيوان سياسي بطبعه»:',o:['أرسطو','أفلاطون','ابن خلدون','روسو'],a:0}
+];
+let B=null;
+const bBest=()=>store.get('bBest',0);
+function bReset(){$('#bEnd').classList.add('hidden');$('#bStart').classList.remove('hidden');$('#bBest').textContent=bBest()?'أفضل نتيجة لك: '+bBest()+' نقطة':''}
+function bDraw(){$('#bHearts').textContent='❤️'.repeat(B.hearts)+'🖤'.repeat(3-B.hearts);$('#bStreak').textContent=B.streak>1?'🔥 سلسلة ×'+B.streak:'';$('#bSc').textContent=B.score+' نقطة';$('#bHp').style.width=Math.max(0,B.hp/B.max*100)+'%'}
+function bShow(){
+  clearInterval(B.iv);
+  if(B.hp<=0||B.hearts<=0||B.i>=B.pool.length)return bEnd();
+  const q=B.pool[B.i],opts=shuffle(q.o.map((t,i)=>({t,ok:i===q.a})));B.t=15;B.cur=opts;
+  $('#bSubj').textContent='سؤال '+(B.i+1)+' من '+B.pool.length+' ، '+q.s;$('#bQ').textContent=q.q;$('#bTm').style.width='100%';
+  $('#bOpts').innerHTML='';opts.forEach((o,k)=>{const b=document.createElement('button');b.className='opt';b.textContent=o.t;b.onclick=()=>bAns(k);$('#bOpts').appendChild(b)});
+  bDraw();
+  B.iv=setInterval(()=>{B.t--;$('#bTm').style.width=B.t/15*100+'%';if(B.t<=0)bAns(-1)},1000);
+}
+function bAns(k){
+  clearInterval(B.iv);const bs=$$('#bOpts .opt');bs.forEach((b,i)=>{b.disabled=true;if(B.cur[i].ok)b.classList.add('good')});
+  if(k>=0&&B.cur[k].ok){B.streak++;const d=10+Math.min(B.streak-1,5)*4;B.hp-=d;B.score+=d*2;$('#bBoss').textContent='😵';$('#bBoss').style.transform='translateX(10px) rotate(6deg)'}
+  else{if(k>=0)bs[k].classList.add('bad');B.hearts--;B.streak=0;$('#bBoss').textContent='😈'}
+  bDraw();setTimeout(()=>{$('#bBoss').textContent='👾';$('#bBoss').style.transform='';B.i++;bShow()},1300);
+}
+function bEnd(){
+  clearInterval(B.iv);const win=B.hp<=0;if(win)B.score+=B.hearts*20;
+  if(B.score>bBest())store.set('bBest',B.score);
+  $('#bPlay').classList.add('hidden');$('#bEnd').classList.remove('hidden');
+  $('#bEmoji').textContent=win?'🏆':'💪';$('#bTitle').textContent=win?'هزمت وحش الباك!':'الوحش صمد هذه المرة';
+  $('#bMsg').textContent=(win?'نتيجتك: '+B.score+' نقطة. ':'نتيجتك: '+B.score+' نقطة. ')+(win?'عقلك جاهز للباك، حاول رقماً قياسياً جديداً.':'راجع الأسئلة التي أخطأت فيها وأعد المحاولة، كل محاولة تقرّبك من النصر.');
+}
+$('#bGo').onclick=()=>{
+  const sub=$('#bSub').value,pool=shuffle(BQ.filter(q=>sub==='الكل'||q.s===sub)).slice(0,10);
+  B={pool,i:0,hp:pool.length*10,max:pool.length*10,hearts:3,streak:0,score:0};
+  $('#bStart').classList.add('hidden');$('#bPlay').classList.remove('hidden');bShow();
+};
+bReset();
+
+
+/* ================= تثبيت التطبيق على الشاشة (PWA) ================= */
+let dip=null;
+const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e;if(!standalone)$('#installBtn').classList.remove('hidden')});
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!standalone)$('#installBtn').classList.remove('hidden');
+$('#installBtn').onclick=async()=>{if(dip){dip.prompt();await dip.userChoice;dip=null;$('#installBtn').classList.add('hidden')}else alert('على آيفون: اضغط زر المشاركة في Safari ثم اختر «إضافة إلى الشاشة الرئيسية».')};
+addEventListener('appinstalled',()=>$('#installBtn').classList.add('hidden'));
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+
+/* ================= الأساتذة (بيانات محلية بسيطة، بلا خادم) ================= */
+let tBr='كل الشعب',tSb='كل المواد';
+['كل الشعب',...Object.keys(BR)].forEach(b=>$('#tBranch').add(new Option(b,b)));
+['كل المواد',...SUBJECTS,'عام'].forEach(b=>$('#tSubject').add(new Option(b,b)));
+const inBr=(x)=>tBr==='كل الشعب'||x.branches==='الكل'||x.branches.includes(tBr);
+const inSb=(x)=>tSb==='كل المواد'||x.subject===tSb;
+let TIPS=[];fetch('tips.json').then(r=>r.json()).then(d=>{TIPS=Array.isArray(d)?d:[];drawTeachers()}).catch(()=>{});
+function drawTeachers(){
+  const tips=TIPS.filter(x=>inBr(x)&&inSb(x)),ts=CONFIG.teachers.filter(x=>inBr(x)&&inSb(x));
+  $('#tTips').innerHTML=tips.length?tips.map(x=>`<article class="card p-4"><span class="text-xs px-2 py-1 rounded-full" style="background:var(--bg);border:1px solid var(--line)">${esc(x.subject)}</span><p class="mt-2 leading-7">${esc(x.text)}</p></article>`).join(''):'<p style="color:var(--mut)">ستُنشر نصائح الأساتذة هنا قريباً.</p>';
+  $('#tGrid').innerHTML=ts.length?ts.map(t=>`<article class="card p-4"><span class="text-xs px-2 py-1 rounded-full" style="background:var(--bg);border:1px solid var(--line)">${esc(t.subject)}</span><h4 class="font-semibold mt-2">${esc(t.name)}</h4><p class="text-sm mt-1 leading-6" style="color:var(--mut)">${esc(t.info)}</p><a class="btn btn-ghost mt-3 w-full" href="${esc(t.contact||CONFIG.contactLink)}" target="_blank" rel="noopener">تواصل لحجز حصة</a></article>`).join(''):'<p style="color:var(--mut)">لا توجد دروس دعم لهذا الاختيار بعد.</p>';
+}
+$('#tBranch').onchange=e=>{tBr=e.target.value;drawTeachers()};
+$('#tSubject').onchange=e=>{tSb=e.target.value;drawTeachers()};
+$('#joinTeacher').href=CONFIG.contactLink;
+drawTeachers();
+</script>
+</body>
+</html>
