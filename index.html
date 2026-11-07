@@ -42,6 +42,10 @@ dialog::backdrop{background:rgba(5,10,25,.65);backdrop-filter:blur(4px)}
 .zellige{background-image:radial-gradient(circle at 1px 1px,var(--line) 1.5px,transparent 0);background-size:22px 22px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -869,6 +873,5 @@ $('#tSubject').onchange=e=>{tSb=e.target.value;drawTeachers()};
 $('#joinTeacher').href=CONFIG.contactLink;
 drawTeachers();
 </script>
-  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
